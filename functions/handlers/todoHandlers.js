@@ -10,7 +10,7 @@ const getTodosHandler = async (ctx) => {
     }
 };
 
-const postTodosHandler = async (ctx) => {
+const postTodoHandler = async (ctx) => {
     try {
         const todoData = ctx.req.body;
         const todo = await createTodo(JSON.parse(todoData));
@@ -42,4 +42,4 @@ const deleteTodosHandler = async (ctx) => {
     }
 };
 
-export { getTodosHandler, postTodosHandler, putTodosHandler, deleteTodosHandler };
+export { getTodosHandler, postTodoHandler, putTodosHandler, deleteTodosHandler };

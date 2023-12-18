@@ -1,5 +1,5 @@
 import Router from "koa-router";
-import { getTodosHandler, postTodosHandler, putTodosHandler, deleteTodosHandler } from "../handlers/todoHandlers.js";
+import { getTodosHandler, postTodoHandler, putTodosHandler, deleteTodosHandler } from "../handlers/todoHandlers.js";
 import { todoMiddleware } from "../middleWares/todosMiddleware.js";
 
 const router = new Router({
@@ -7,7 +7,7 @@ const router = new Router({
 });
 
 router.get("todos", getTodosHandler);
-router.post("todo", todoMiddleware, postTodosHandler);
+router.post("todo", todoMiddleware, postTodoHandler);
 router.put("todos", putTodosHandler);
 router.delete("todos", deleteTodosHandler);
 
