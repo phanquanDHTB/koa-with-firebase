@@ -13,9 +13,8 @@ const getTodosHandler = async (ctx) => {
 const postTodosHandler = async (ctx) => {
     try {
         const todoData = ctx.req.body;
-        await createTodo(JSON.parse(todoData));
-        const todos = getTodos();
-        created({ ctx, content: todos });
+        const todo = await createTodo(JSON.parse(todoData));
+        created({ ctx, content: todo });
     } catch (err) {
         serverInternal({ ctx });
     }

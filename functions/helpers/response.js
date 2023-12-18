@@ -8,7 +8,6 @@ const baseResponse = (ctx, status, data, message) => {
     if (listStatusErr.includes(status)) {
         ctx.body = {
             success: false,
-            data: data,
             error: message,
         };
     }

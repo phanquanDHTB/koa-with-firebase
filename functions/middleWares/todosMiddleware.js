@@ -11,7 +11,7 @@ const todoMiddleware = async (ctx, next) => {
         await schema.validate(JSON.parse(todoData));
         await next();
     } catch (e) {
-        invalidData();
+        invalidData({ ctx, message: e.message });
     }
 };
 
