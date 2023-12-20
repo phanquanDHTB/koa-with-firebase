@@ -4,15 +4,33 @@ import { db, batch } from "./dbConfig.js";
  * Represents a user object.
  *
  * @typedef {Object} Todo
- * @property {string} title - The username of the user.
- * @property {boolean} completed - The email address of the user.
+ * @property {string} title
+ * @property {boolean} completed
  */
 
 /**
  *
  * @return {[Todo]}
  */
-const getTodos = async () => {
+const getTodos = async (query) => {
+    if (query?.limit) {
+        const todos = await db.limit(query.limit).get();
+        if (todos.empty) {
+            return [];
+        }
+        return todos.docs.map((doc) => {
+            return { ...doc.data(), id: doc.id };
+        });
+    }
+    if (query?.sort) {
+        const todos = await db.orderBy("createdAt", query.sort).get();
+        if (todos.empty) {
+            return [];
+        }
+        return todos.docs.map((doc) => {
+            return { ...doc.data(), id: doc.id };
+        });
+    }
     const todos = await db.get();
     if (todos.empty) {
         return [];
@@ -28,6 +46,7 @@ const getTodos = async () => {
  * @return {Todo}
  */
 const createTodo = async (todoData) => {
+    todoData.createdAt = new Date();
     const docRef = await db.add(todoData);
     return { ...todoData, id: docRef.id };
 };

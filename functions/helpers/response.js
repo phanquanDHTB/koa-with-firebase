@@ -1,15 +1,15 @@
-const listStatusErr = [400, 401, 403, 404, 409, 498, 500];
+const listErrStatus = [400, 401, 403, 404, 409, 498, 500];
 
 const baseResponse = (ctx, status, data, message) => {
     status = status || 200;
     data = data || "";
     message = message || "";
     ctx.status = status;
-    if (listStatusErr.includes(status)) {
-        ctx.body = {
+    if (listErrStatus.includes(status)) {
+        return (ctx.body = {
             success: false,
             error: message,
-        };
+        });
     }
     ctx.body = {
         data: data,

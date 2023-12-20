@@ -3,7 +3,8 @@ import { serverInternal, success, created } from "../helpers/response.js";
 
 const getTodosHandler = async (ctx) => {
     try {
-        const todos = await getTodos();
+        const query = ctx.query;
+        const todos = await getTodos(query);
         success({ ctx, content: todos });
     } catch (err) {
         serverInternal({ ctx });
