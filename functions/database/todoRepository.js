@@ -13,30 +13,24 @@ import { db, batch } from "./dbConfig.js";
  * @return {[Todo]}
  */
 const getTodos = async (query) => {
-    if (query?.limit) {
-        const todos = await db.limit(query.limit).get();
-        if (todos.empty) {
-            return [];
-        }
-        return todos.docs.map((doc) => {
-            return { ...doc.data(), id: doc.id };
-        });
-    }
+    let todosDb = db;
     if (query?.sort) {
-        const todos = await db.orderBy("createdAt", query.sort).get();
-        if (todos.empty) {
-            return [];
-        }
-        return todos.docs.map((doc) => {
-            return { ...doc.data(), id: doc.id };
-        });
+        todosDb = db.orderBy("createdAt", query.sort);
     }
-    const todos = await db.get();
+
+    if (query?.limit) {
+        todosDb = todosDb.limit(query.limit);
+    }
+
+    const todos = await todosDb.get();
+
     if (todos.empty) {
         return [];
     }
+
     return todos.docs.map((doc) => {
-        return { ...doc.data(), id: doc.id };
+        const { createdAt, ...field } = doc.data();
+        return { ...field, id: doc.id, createdAt: new Date(createdAt._seconds * 1000 + createdAt._nanoseconds / 1e6) };
     });
 };
 
